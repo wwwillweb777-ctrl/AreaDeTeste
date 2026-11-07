@@ -1,681 +1,878 @@
 <!DOCTYPE html>
-<html lang="pt-BR">
+<html lang="pt‑BR">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Área Administrativa — Gabriel do Corte ✂️💈</title>
-    <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-database-compat.js"></script>
+    <meta charset="UTF‑8">
+    <meta name="viewport" content="width=device‑width, initial‑scale=1.0">
+    <title>Área Administrativa — Fã Clube Serginho Cabeção</title>
+
+    <script src="config.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase‑app‑compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase‑database‑compat.js"></script>
+
     <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        
+        * { margin: 0; padding: 0; box‑sizing: border‑box; font‑family: Arial, sans‑serif; }
         body {
-            min-height: 100vh;
-            background: linear-gradient(180deg, #0f0f0f 0%, #1a1a1a 100%);
-            background-image: 
-                radial-gradient(#2a2a2a 1px, transparent 1px),
-                radial-gradient(#2a2a2a 1px, transparent 1px);
-            background-size: 20px 20px;
-            background-position: 0 0, 10px 10px;
-            font-family: 'Segoe UI', sans-serif;
+            background‑color: #f8f8f8;
+            background‑image: radial‑gradient(#d4d4d4 1px, transparent 1px);
+            background‑size: 20px 20px;
+            min‑height: 100vh;
             padding: 1rem;
-            color: #fff;
         }
-
-        .caixa-principal {
-            max-width: 480px;
-            margin: 0 auto;
-            padding: 1rem 0;
-        }
-
-        h1 {
-            text-align: center;
-            color: #d4af37;
-            font-size: 2rem;
-            font-family: Georgia, serif;
-            margin-bottom: 0.3rem;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 0.5rem;
-        }
-
-        .subtitulo {
-            text-align: center;
-            color: #f4d03f;
-            font-size: 1rem;
-            margin-bottom: 1.5rem;
-        }
-
         .escondido { display: none !important; }
 
-        /* === TELA DE LOGIN === */
-        .tela-login-card {
-            max-width: 420px;
-            margin: 3rem auto;
+        .caixa‑login {
             background: #000;
-            border-radius: 28px;
-            border: 4px solid #d4af37;
-            padding: 2.5rem;
-            box-shadow: 0 10px 30px rgba(212, 175, 55, 0.25);
+            border: 6px solid #f4a900;
+            border‑radius: 24px;
+            padding: 2.5rem 1.8rem;
+            max‑width: 400px;
+            margin: 6rem auto;
+            text‑align: center;
         }
-
-        .grupo-senha {
+        .caixa‑login h1 {
+            color: #f4a900;
+            font‑size: 1.8rem;
+            margin‑bottom: 0.5rem;
+        }
+        .subtitulo {
+            color: #ffcc00;
+            font‑size: 1.1rem;
+            margin‑bottom: 2rem;
+        }
+        .campo‑senha {
             position: relative;
-            margin-bottom: 1.5rem;
+            margin‑bottom: 1.5rem;
         }
-
-        input, textarea {
+        .campo‑senha input {
             width: 100%;
-            padding: 1rem 1.2rem;
-            border: 2px solid #d4af37;
-            border-radius: 16px;
-            font-size: 1rem;
-            outline: none;
+            padding: 1rem 3.5rem 1rem 1rem;
             background: #1a1a1a;
+            border: 3px solid #f4a900;
+            border‑radius: 12px;
             color: #fff;
+            font‑size: 1rem;
+            outline: none;
         }
-
-        input:focus, textarea:focus {
-            border-color: #f4d03f;
-            box-shadow: 0 0 0 4px rgba(212, 175, 55, 0.2);
-        }
-
-        .botao-olho {
+        .botao‑olho {
             position: absolute;
             right: 1rem;
             top: 50%;
-            transform: translateY(-50%);
+            transform: translateY(‑50%);
             background: transparent;
             border: none;
-            font-size: 1.5rem;
+            font‑size: 1.5rem;
             cursor: pointer;
+            padding: 0;
         }
-
-        button {
-            padding: 1rem 1.5rem;
-            border: none;
-            border-radius: 50px;
-            font-weight: bold;
-            font-size: 1rem;
-            cursor: pointer;
-            transition: transform 0.2s;
-        }
-
-        button:active { transform: scale(0.98); }
-
-        .btn-principal {
-            background: linear-gradient(90deg, #25D366, #128C7E);
-            color: white;
-            width: 100%;
-            font-size: 1.1rem;
-        }
-
-        .btn-sair {
-            background: linear-gradient(90deg, #e53935, #f4511e);
-            color: white;
-            padding: 0.7rem 1.5rem;
-            font-size: 1rem;
-        }
-
-        .btn-verde { 
-            background: linear-gradient(90deg, #25D366, #128C7E); 
-            color: white; 
-        }
-        .btn-vermelho { 
-            background: linear-gradient(90deg, #ef5350, #e53935); 
-            color: white; 
-        }
-        .btn-dourado {
-            background: linear-gradient(90deg, #d4af37, #f4d03f);
-            color: #000;
-        }
-
-        .aviso-erro {
+        .aviso‑erro {
             color: #ff6b6b;
             background: #2c1515;
-            padding: 0.8rem 1rem;
-            border-radius: 12px;
-            margin-bottom: 1rem;
-            border-left: 4px solid #ef5350;
-        }
-
-        .cabecalho-tela {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 1.5rem;
-        }
-
-        /* === LISTA DE CONVERSAS === */
-        .bloco-pessoa {
-            margin-bottom: 1.5rem;
-            border-radius: 24px;
-            overflow: hidden;
-            border: 2px solid #d4af37;
-            background: #111;
-        }
-
-        .cabecalho-pessoa {
-            background: linear-gradient(90deg, #d4af37, #f4d03f);
-            color: #000;
-            padding: 1.2rem;
-            font-size: 1.4rem;
-            font-weight: bold;
-        }
-
-        .dados-pessoa {
-            padding: 1.2rem;
-        }
-
-        .linha-dado {
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-            padding: 0.5rem 0.8rem;
-            border-radius: 50px;
-            margin-bottom: 0.5rem;
-            font-size: 0.9rem;
-        }
-
-        .etq-id { background: #1e3a5f; color: #90caf9; }
-
-        .status-bolinha {
-            display: inline-block;
-            padding: 0.3rem 0.8rem;
-            border-radius: 50px;
-            font-size: 0.85rem;
-            font-weight: bold;
-            margin-top: 0.5rem;
-        }
-
-        .pendente { background: #4a3f00; color: #ffd54f; }
-        .respondida { background: #1b5e20; color: #c8e6c9; }
-
-        .botoes-pessoa {
-            display: flex;
-            gap: 0.6rem;
-            margin-top: 1rem;
-        }
-
-        .botoes-pessoa button {
-            flex: 1;
             padding: 0.8rem;
-            font-size: 0.95rem;
+            border‑radius: 8px;
+            margin‑bottom: 1rem;
+            border‑left: 4px solid #ff6b6b;
+        }
+        .btn‑entrar {
+            width: 100%;
+            padding: 1rem;
+            background: linear‑gradient(90deg, #f4a900, #ffcc00);
+            border: none;
+            border‑radius: 50px;
+            font‑size: 1.2rem;
+            font‑weight: bold;
+            cursor: pointer;
+            color: #000;
+        }
+        .link‑voltar {
+            display: inline‑block;
+            margin‑top: 1rem;
+            color: #f4a900;
+            font‑size: 1rem;
+            text‑decoration: none;
         }
 
-        .botoes-geral {
-            margin-top: 2rem;
-            display: flex;
-            flex-direction: column;
-            gap: 0.8rem;
-        }
-
-        .botoes-geral button { width: 100%; }
-
-        .vazio {
-            text-align: center;
-            padding: 3rem 1rem;
-            color: #999;
-        }
-
-        /* === TELA CHAT === */
-        .tela-chat {
-            display: flex;
-            flex-direction: column;
-            height: calc(100vh - 40px);
-            border: 3px solid #d4af37;
-            border-radius: 24px;
+        .caixa‑painel {
             background: #000;
+            border: 4px solid #f4a900;
+            border‑radius: 20px;
+            padding: 1.5rem;
+            max‑width: 550px;
+            margin: 0 auto;
+            min‑height: 80vh;
+        }
+        .cabecalho {
+            display: flex;
+            justify‑content: space‑between;
+            align‑items: center;
+            margin‑bottom: 1.5rem;
+        }
+        .cabecalho h2 {
+            color: #f4a900;
+            font‑size: 1.2rem;
+        }
+        .btn‑sair {
+            background: linear‑gradient(90deg, #e53935, #f4511e);
+            color: #fff;
+            border: none;
+            padding: 0.5rem 1rem;
+            border‑radius: 20px;
+            font‑weight: bold;
+            cursor: pointer;
+            font‑size: 0.9rem;
+        }
+        .abas {
+            display: flex;
+            gap: 0.5rem;
+            margin‑bottom: 1rem;
+            flex‑wrap: wrap;
+        }
+        .aba {
+            flex: 1;
+            min‑width: 100px;
+            padding: 0.7rem;
+            background: #222;
+            border: 2px solid #444;
+            border‑radius: 10px;
+            color: #aaa;
+            text‑align: center;
+            cursor: pointer;
+            font‑weight: bold;
+            font‑size: 0.85rem;
+        }
+        .aba.ativa {
+            background: #f4a900;
+            border‑color: #ffcc00;
+            color: #000;
+        }
+        .bloco‑mensagem {
+            background: #111;
+            border: 2px solid #f4a900;
+            border‑radius: 12px;
+            padding: 0;
+            margin‑bottom: 1rem;
             overflow: hidden;
         }
-
-        .chat-cabecalho {
-            background: linear-gradient(90deg, #25D366, #128C7E);
-            color: white;
-            padding: 1rem 1.2rem;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
+        .msg‑cabecalho {
+            background: linear‑gradient(90deg, #f4a900, #ffcc00);
+            color: #000;
+            padding: 0.6rem 1rem;
+            font‑weight: bold;
         }
-
-        .chat-nome-usuario {
-            font-weight: bold;
-            font-size: 1.1rem;
+        .msg‑remetente {
+            background: #1a1a1a;
+            padding: 0.5rem 1rem;
+            color: #f4a900;
+            font‑size: 0.9rem;
+            border‑bottom: 1px solid #333;
         }
-
-        .chat-conteudo {
-            flex: 1;
-            padding: 1.5rem;
-            overflow-y: auto;
-            background: #0a0a0a;
+        .id‑usuario {
+            font‑size: 0.8rem;
+            color: #888;
+            margin‑left: 0.5rem;
+            background: #2a2a2a;
+            padding: 0.1rem 0.4rem;
+            border‑radius: 4px;
         }
-
-        .bolha-usuario {
-            background: #25D366;
-            color: white;
-            padding: 1rem 1.3rem;
-            border-radius: 24px 24px 24px 8px;
-            margin-bottom: 1rem;
-            max-width: 85%;
-        }
-
-        .bolha-admin {
-            background: #1f1f1f;
-            color: #d4af37;
-            border: 1px solid #d4af37;
-            padding: 1rem 1.3rem;
-            border-radius: 24px 24px 8px 24px;
-            margin-bottom: 1rem;
-            margin-left: auto;
-            max-width: 85%;
-        }
-
-        .bolha-nome {
-            font-weight: bold;
-            font-size: 0.9rem;
-            margin-bottom: 0.3rem;
-            opacity: 0.9;
-        }
-
-        .bolha-texto {
-            font-size: 1rem;
-            line-height: 1.5;
-            margin-bottom: 0.3rem;
-        }
-
-        .bolha-data {
-            font-size: 0.75rem;
-            opacity: 0.75;
-        }
-
-        .chat-entrada {
+        .msg‑conteudo {
             padding: 1rem;
-            border-top: 2px solid #333;
+            color: #ddd;
+            line‑height: 1.6;
+            white‑space: pre‑wrap;
+            word‑break: break‑word;
         }
-
-        .chat-entrada textarea {
-            border-radius: 20px;
-            resize: none;
-            margin-bottom: 0.8rem;
+        .resposta‑area {
+            padding: 0 1rem 1rem 1rem;
+            border‑top: 1px solid #333;
+            margin‑top: 0.5rem;
         }
-
-        .chat-botao-enviar {
+        .resposta‑label {
+            color: #39ff14;
+            font‑size: 0.85rem;
+            font‑weight: bold;
+            margin‑bottom: 0.5rem;
+            display: block;
+        }
+        .resposta‑dada {
+            background: #1a2e1a;
+            padding: 0.8rem;
+            border‑radius: 8px;
+            color: #90ee90;
+            border‑left: 3px solid #39ff14;
+            margin‑bottom: 0.5rem;
+        }
+        .resposta‑input {
             width: 100%;
-            font-size: 1.1rem;
+            min‑height: 80px;
+            padding: 0.7rem;
+            background: #222;
+            border: 2px solid #444;
+            border‑radius: 8px;
+            color: #fff;
+            font‑size: 0.9rem;
+            margin‑bottom: 0.5rem;
+            outline: none;
+            resize: vertical;
         }
-
-        .botao-voltar {
-    background: #ffffff;       /* Fundo BRANCO */
-    color: #000000;            /* Texto PRETO (melhor leitura) */
-    border: none;
-    padding: 0.7rem 1.2rem;    /* Fica maior e mais visível */
-    font-size: 1rem;
-    font-weight: bold;
-    border-radius: 50px;
-    cursor: pointer;
-}
-
-.botao-voltar:before {
-    content: "← ";
-    font-size: 1.2rem;
-    font-weight: bold;
-}
+        .resposta‑input:focus {
+            border‑color: #39ff14;
+        }
+        .btn‑responder {
+            width: 100%;
+            padding: 0.6rem;
+            background: linear‑gradient(90deg, #39ff14, #22cc00);
+            color: #000;
+            border: none;
+            border‑radius: 8px;
+            font‑weight: bold;
+            cursor: pointer;
+            font‑size: 0.95rem;
+            margin‑bottom: 0.5rem;
+        }
+        .msg‑botoes {
+            padding: 0 1rem 1rem 1rem;
+        }
+        .btn‑apagar {
+            width: 100%;
+            padding: 0.6rem;
+            background: linear‑gradient(90deg, #e53935, #c62828);
+            color: white;
+            border: none;
+            border‑radius: 8px;
+            font‑weight: bold;
+            cursor: pointer;
+            font‑size: 0.95rem;
+            margin‑bottom: 0.5rem;
+        }
+        .btn‑apagar‑resposta {
+            background: linear‑gradient(90deg, #666, #444);
+        }
+        .btn‑limpar‑tudo {
+            width: 100%;
+            padding: 0.8rem;
+            background: linear‑gradient(90deg, #e53935, #c62828);
+            color: white;
+            border: none;
+            border‑radius: 10px;
+            font‑weight: bold;
+            font‑size: 1rem;
+            cursor: pointer;
+            margin‑top: 1rem;
+        }
+        .vazio {
+            text‑align: center;
+            padding: 3rem 1rem;
+            color: #888;
+        }
+        .horario {
+            font‑size: 0.75rem;
+            color: #666;
+            margin‑top: 0.3rem;
+        }
         
-
-        .botao-voltar:before {
-            content: "← ";
+        /* ===== COMENTÁRIOS DE VÍDEOS ===== */
+        .video‑titulo‑ref {
+            font‑size: 0.8rem;
+            color: #888;
+            margin‑bottom: 0.5rem;
         }
-
-        @media (max-width: 480px) {
-            .bolha-usuario, .bolha-admin {
-                max-width: 92%;
-            }
+        /* ===== BLOCO DOS CONTADORES ===== */
+        .bloco‑contadores{
+            background:#222; 
+            padding:1rem; 
+            border‑radius:12px; 
+            border:2px solid #f4a900; 
+            margin‑bottom:1rem;
+        }
+        .bloco‑contadores h3{
+            color:#f4a900;
+            margin‑bottom:0.6rem;
         }
     </style>
 </head>
 <body>
 
-    <!-- TELA DE LOGIN -->
-    <div id="telaLogin" class="caixa-principal">
-        <div class="tela-login-card">
-            <h1>🔐 Área Administrativa</h1>
-            <p class="subtitulo">✂️ Gabriel do Corte 💈</p>
+    <div id="telaLogin" class="caixa‑login">
+        <h1>🔐 Área Administrativa</h1>
+        <p class="subtitulo">Fã Clube do Serginho Cabeção</p>
 
-            <div class="grupo-senha">
-                <input type="password" id="campoSenha" placeholder="Digite a senha..." autocomplete="off">
-                <button type="button" class="botao-olho" onclick="alternarVisibilidade()">🙈</button>
-            </div>
-
-            <p id="avisoErro" class="aviso-erro escondido">❌ Senha incorreta!</p>
-
-            <button class="btn-principal" onclick="verificarSenha()">🔐 Entrar</button>
-
-            <div style="text-align:center; margin-top:1.5rem;">
-                <a href="index.html" style="color:#d4af37; text-decoration:none;">← Voltar para o site</a>
-            </div>
+        <div class="campo‑senha">
+            <input type="password" id="campoSenha" placeholder="Digite a senha..." autocomplete="off">
+            <button type="button" class="botao‑olho" id="botaoOlho">🙈</button>
         </div>
+
+        <p id="avisoErro" class="aviso‑erro escondido">❌ Senha incorreta! Tente novamente.</p>
+
+        <button class="btn‑entrar" id="botaoEntrar">🔓 Entrar</button>
+
+        <a href="javascript:history.back()" class="link‑voltar">← Voltar para o site</a>
     </div>
 
-    <!-- LISTA DE CONVERSAS -->
-    <div id="telaLista" class="caixa-principal escondido">
-        <div class="cabecalho-tela">
-            <h1 style="justify-content:flex-start;">💬 Conversas</h1>
-            <button class="btn-sair" onclick="sair()">🚪 Sair</button>
+    <div id="telaPainel" class="caixa‑painel escondido">
+        <div class="cabecalho">
+            <h2>📋 Painel de Controle</h2>
+            <button class="btn‑sair" id="botaoSair">🚪 Sair</button>
         </div>
 
-        <div id="lista-usuarios"></div>
-
-        <div class="botoes-geral">
-            <button class="btn-vermelho" onclick="if(confirm('Apagar TODAS as mensagens?')) limparTodasMensagens()">🗑️ Limpar Todas as Mensagens</button>
+        <!-- BLOCO DOS CONTADORES (NOVO) -->
+        <div class="bloco‑contadores">
+            <h3>📊 Estatísticas de Acesso</h3>
+            <p>👁️ Total de visitas (Geral): <span id="numContadorGeral">0</span></p>
+            <p>🔗 Visitas vindos da Bio TikTok: <span id="numContadorTikTok">0</span></p>
         </div>
-    </div>
 
-    <!-- TELA CHAT INDIVIDUAL -->
-    <div id="telaChat" class="caixa-principal escondido">
-        <div class="tela-chat">
-            <div class="chat-cabecalho">
-                <button class="botao-voltar" onclick="fecharChat()">Voltar</button>
-                <span class="chat-nome-usuario" id="chatNomeCabecalho"></span>
-                <span style="font-size:0.8rem; opacity:0.8;" id="chatIdCabecalho"></span>
-            </div>
-
-            <div class="chat-conteudo" id="chatConteudo"></div>
-
-            <div class="chat-entrada">
-                <textarea id="chatResposta" rows="3" placeholder="Escreva sua mensagem... ✂️💈"></textarea>
-                <button class="btn-verde chat-botao-enviar" onclick="enviarRespostaChat()">📤 Enviar Mensagem</button>
-            </div>
+        <div class="abas">
+            <button class="aba" id="abaApoio">📝 Mural</button>
+            <button class="aba" id="abaChat">💬 Chat</button>
+            <button class="aba" id="abaComentariosVideos">💬 Vídeos</button>
         </div>
+
+        <div id="listaApoio" class="escondido"></div>
+        <div id="listaChat" class="escondido"></div>
+        <div id="listaComentariosVideos" class="escondido"></div>
+
+        <button class="btn‑limpar‑tudo escondido" id="btnLimparApoio">🗑️ Apagar Tudo — Mural</button>
+        <button class="btn‑limpar‑tudo escondido" id="btnLimparChat">🗑️ Apagar Tudo — Chat</button>
+        <button class="btn‑limpar‑tudo escondido" id="btnLimparComentariosVideos">🗑️ Apagar Tudo — Comentários de Vídeos</button>
+
+        <a href="javascript:history.back()" class="link‑voltar" style="display:block;text‑align:center;margin‑top:2rem;color:#888;">← Voltar para o site</a>
     </div>
 
     <script>
-        // ⚙️ CONFIGURAÇÕES
-        const SENHA_ADMIN = "Gabriel123";
-        const CAMINHO_MSG = "gabriel_do_corte/mensagens";
-
-        // 🔌 FIREBASE
-const firebaseConfig = {
-  apiKey: "AIzaSyBwYqhA74ThUkYpHkwxc2EM-kJ26I2-ek8",
-  authDomain: "chave-key-teste.firebaseapp.com",
-  databaseURL: "https://chave-key-teste-default-rtdb.firebaseio.com",
-  projectId: "chave-key-teste",
-  storageBucket: "chave-key-teste.firebasestorage.app",
-  messagingSenderId: "58692158626",
-  appId: "1:58692158626:web:2762d42ea0abf6726943fb"
-};
         let db = null;
-        let conversas = {};
-        let usuarioAtual = null;
-        let ouvinteMensagens = null;
-
         if (typeof firebase !== 'undefined' && !firebase.apps.length) {
             firebase.initializeApp(firebaseConfig);
             db = firebase.database();
         }
 
-        function dataAtual() {
-            return new Date().toLocaleString('pt-BR');
-        }
+        let abaAtual = 'apoio';
+        let ouvinteApoio = null;
+        let ouvinteChat = null;
+        let ouvinteComentariosVideos = null;
+        let ouvinteContadorGeral = null;
+        let ouvinteContadorTikTok = null;
 
-        // 🔧 Converte data "dia/mês/ano, hora:minuto" para número
-        function parseDataPtBr(texto) {
-            if (!texto) return 0;
-            try {
-                const [parteData, parteHora] = texto.split(', ');
-                const [dia, mes, ano] = parteData.split('/').map(Number);
-                const [h, m] = parteHora.split(':').map(Number);
-                return new Date(ano, mes - 1, dia, h, m).getTime();
-            } catch {
-                return 0;
-            }
-        }
+        const CAMINHO_CHAT = "FãClube/chat/mensagens";
+        const CAMINHO_APOIO = "MensagensApoio";
+        const CAMINHO_COMENTARIOS_VIDEOS = "videos";
+        const CAMINHO_CONTADOR_GERAL = "FãClube/visitas";
+        const CAMINHO_CONTADOR_TIKTOK = "FãClube/visitasTikTok";
 
+        const campoSenha = document.getElementById('campoSenha');
+        const botaoOlho = document.getElementById('botaoOlho');
+        const avisoErro = document.getElementById('avisoErro');
         let senhaVisivel = false;
-        function alternarVisibilidade() {
-            const campo = document.getElementById('campoSenha');
-            const botao = document.querySelector('.botao-olho');
+
+        botaoOlho.addEventListener('click', function() {
             senhaVisivel = !senhaVisivel;
-            campo.type = senhaVisivel ? 'text' : 'password';
-            botao.textContent = senhaVisivel ? '👁️' : '🙈';
-        }
+            campoSenha.type = senhaVisivel ? 'text' : 'password';
+            botaoOlho.textContent = senhaVisivel ? '👁️' : '🙈';
+        });
 
-        function verificarSenha() {
-            const digitada = document.getElementById('campoSenha').value.trim();
-            if (digitada === SENHA_ADMIN) {
+        document.getElementById('botaoEntrar').addEventListener('click', function() {
+            const digitada = campoSenha.value.trim();
+            if (typeof SENHA_ADMIN !== 'undefined' && digitada === SENHA_ADMIN) {
+                avisoErro.classList.add('escondido');
                 document.getElementById('telaLogin').classList.add('escondido');
-                document.getElementById('telaLista').classList.remove('escondido');
-                carregarConversas();
+                document.getElementById('telaPainel').classList.remove('escondido');
+                abaAtual = 'apoio';
+                atualizarAbas();
+                carregarApoio();
+                carregarContadoresPainel(); // CARREGA OS NÚMEROS DOS CONTADORES
             } else {
-                document.getElementById('avisoErro').classList.remove('escondido');
-                document.getElementById('campoSenha').value = '';
+                avisoErro.classList.remove('escondido');
+                campoSenha.value = '';
             }
+        });
+
+        document.getElementById('botaoSair').addEventListener('click', function() {
+            if (confirm("Sair da área administrativa?")) {
+                pararOuvirTudo();
+                pararOuvirContadores();
+                abaAtual = 'apoio';
+                document.getElementById('telaPainel').classList.add('escondido');
+                document.getElementById('telaLogin').classList.remove('escondido');
+                avisoErro.classList.add('escondido');
+                campoSenha.value = '';
+                senhaVisivel = false;
+                botaoOlho.textContent = '🙈';
+                campoSenha.type = 'password';
+            }
+        });
+
+        document.getElementById('abaApoio').addEventListener('click', function() {
+            abaAtual = 'apoio';
+            atualizarAbas();
+            carregarApoio();
+        });
+        document.getElementById('abaChat').addEventListener('click', function() {
+            abaAtual = 'chat';
+            atualizarAbas();
+            carregarChat();
+        });
+        document.getElementById('abaComentariosVideos').addEventListener('click', function() {
+            abaAtual = 'comentarios‑videos';
+            atualizarAbas();
+            carregarComentariosVideos();
+        });
+
+        function atualizarAbas() {
+            document.getElementById('abaApoio').classList.toggle('ativa', abaAtual === 'apoio');
+            document.getElementById('abaChat').classList.toggle('ativa', abaAtual === 'chat');
+            document.getElementById('abaComentariosVideos').classList.toggle('ativa', abaAtual === 'comentarios‑videos');
+            
+            document.getElementById('listaApoio').classList.toggle('escondido', abaAtual !== 'apoio');
+            document.getElementById('listaChat').classList.toggle('escondido', abaAtual !== 'chat');
+            document.getElementById('listaComentariosVideos').classList.toggle('escondido', abaAtual !== 'comentarios‑videos');
+            
+            document.getElementById('btnLimparApoio').classList.toggle('escondido', abaAtual !== 'apoio');
+            document.getElementById('btnLimparChat').classList.toggle('escondido', abaAtual !== 'chat');
+            document.getElementById('btnLimparComentariosVideos').classList.toggle('escondido', abaAtual !== 'comentarios‑videos');
+}
+
+function pararOuvirTudo() {
+    if (ouvinteApoio && db) {
+        db.ref(CAMINHO_APOIO).off("value", ouvinteApoio);
+        ouvinteApoio = null;
+    }
+    if (ouvinteChat && db) {
+        db.ref(CAMINHO_CHAT).off("value", ouvinteChat);
+        ouvinteChat = null;
+    }
+    if (ouvinteComentariosVideos && db) {
+        db.ref(CAMINHO_COMENTARIOS_VIDEOS).off("value", ouvinteComentariosVideos);
+        ouvinteComentariosVideos = null;
+    }
+}
+
+// NOVO: Parar ouvintes dos contadores
+function pararOuvirContadores(){
+    if(ouvinteContadorGeral) db.ref(CAMINHO_CONTADOR_GERAL).off("value", ouvinteContadorGeral);
+    if(ouvinteContadorTikTok) db.ref(CAMINHO_CONTADOR_TIKTOK).off("value", ouvinteContadorTikTok);
+}
+
+// NOVO: Carregar os dois contadores para exibir no painel
+function carregarContadoresPainel(){
+    if(!db) return;
+    ouvinteContadorGeral = db.ref(CAMINHO_CONTADOR_GERAL).on("value", snap=>{
+        document.getElementById("numContadorGeral").innerText = snap.val() || 0;
+    })
+    ouvinteContadorTikTok = db.ref(CAMINHO_CONTADOR_TIKTOK).on("value", snap=>{
+        document.getElementById("numContadorTikTok").innerText = snap.val() || 0;
+    })
+}
+
+function dataRespostaAtual() {
+    return new Date().toLocaleString('pt‑BR', {
+        day:'2‑digit', month:'2‑digit', year:'numeric', hour:'2‑digit', minute:'2‑digit'
+    });
+}
+
+function carregarComentariosVideos() {
+    if (!db) {
+        document.getElementById('listaComentariosVideos').innerHTML = 
+            '<div class="vazio">⚠️ Firebase não conectado. Verifique o config.js</div>';
+        return;
+    }
+    pararOuvirTudo();
+    
+    const container = document.getElementById('listaComentariosVideos');
+    
+    ouvinteComentariosVideos = db.ref(CAMINHO_COMENTARIOS_VIDEOS).on("value", function(snapshot) {
+        container.innerHTML = '';
+
+        if (!snapshot.exists()) {
+            container.innerHTML = '<div class="vazio">💬 Nenhum comentário de vídeo ainda</div>';
+            return;
         }
 
-        function sair() {
-            pararOuvirMensagens();
-            if (!confirm("Sair da área administrativa?")) return;
-            document.getElementById('telaLista').classList.add('escondido');
-            document.getElementById('telaChat').classList.add('escondido');
-            document.getElementById('telaLogin').classList.remove('escondido');
-            document.getElementById('avisoErro').classList.add('escondido');
-            document.getElementById('campoSenha').value = '';
-            senhaVisivel = false;
-            usuarioAtual = null;
-        }
-
-        // === CARREGAR LISTA — TEMPO REAL ===
-        function carregarConversas() {
-            if (!db) {
-                document.getElementById('lista-usuarios').innerHTML = 
-                    '<div class="vazio"><p>⚠️ Firebase não carregou. Atualize a página.</p></div>';
-                return;
-            }
-
-            db.ref(CAMINHO_MSG).on("value", snapMensagens => {
-                const mensagens = snapMensagens.val() || {};
-                conversas = {};
-                const container = document.getElementById('lista-usuarios');
-                container.innerHTML = '';
-
-                if (!snapMensagens.exists()) {
-                    container.innerHTML = '<div class="vazio"><p>📭 Nenhuma mensagem ainda</p></div>';
-                    return;
-                }
-
-                const porId = {};
-                for (const chave in mensagens) {
-                    const m = mensagens[chave];
-                    if (!m.idRemetente) continue;
-                    if (!porId[m.idRemetente]) porId[m.idRemetente] = [];
-                    porId[m.idRemetente].push({ chave, ...m });
-                }
-
-                for (const id in porId) {
-                    const mensagensUser = porId[id];
-                    const nome = mensagensUser[0]?.nomeRemetente || "Visitante";
-                    const temResposta = mensagensUser.some(m => m.resposta);
-
-                    conversas[id] = {
-                        id,
-                        nome,
-                        mensagens: mensagensUser
-                    };
-
-                    container.innerHTML += `
-                        <div class="bloco-pessoa">
-                            <div class="cabecalho-pessoa">${nome}</div>
-                            <div class="dados-pessoa">
-                                <div class="linha-dado etq-id">🆔 ${id}</div>
-                                <div class="status-bolinha ${temResposta ? 'respondida' : 'pendente'}">
-                                    ${temResposta ? '✅ Respondida' : '⏳ Pendente'}
-                                </div>
-                            </div>
-                            <div class="botoes-pessoa">
-                                <button class="btn-dourado" onclick="abrirChat('${id}')">💬 Abrir Chat</button>
-                                <button class="btn-vermelho" onclick="apagarConversa('${id}')">🗑️ Apagar</button>
-                            </div>
+        let temComentarios = false;
+        snapshot.forEach(function(videoSnap) {
+            const videoId = videoSnap.key;
+            const dadosVideo = videoSnap.val();
+            const comentarios = dadosVideo.comentarios || {};
+            
+            for (const chave in comentarios) {
+                temComentarios = true;
+                const c = comentarios[chave];
+                const temResposta = c.resposta && c.resposta.trim() !== '';
+                
+                const div = document.createElement('div');
+                div.className = 'bloco‑mensagem';
+                
+                let botoesHTML = '';
+                if (temResposta) {
+                    botoesHTML = `
+                        <div class="msg‑botoes">
+                            <button class="btn‑apagar" data‑video="${videoId}" data‑chave="${chave}" data‑tipo="comentario">
+                                🗑️ Apagar comentário do usuário
+                            </button>
+                            <button class="btn‑apagar btn‑apagar‑resposta" data‑video="${videoId}" data‑chave="${chave}" data‑tipo="resposta">
+                                🗑️ Apagar minha resposta
+                            </button>
+                        </div>
+                    `;
+                } else {
+                    botoesHTML = `
+                        <div class="msg‑botoes">
+                            <button class="btn‑apagar" data‑video="${videoId}" data‑chave="${chave}" data‑tipo="comentario">
+                                🗑️ Apagar este comentário
+                            </button>
                         </div>
                     `;
                 }
-            });
-        }
-
-        function pararOuvirMensagens() {
-            if (ouvinteMensagens) {
-                db.ref(CAMINHO_MSG).off("value", ouvinteMensagens);
-                ouvinteMensagens = null;
-            }
-        }
-
-        // === ABRIR CHAT — TEMPO REAL + ORDEM CORRETA ===
-        function abrirChat(idUsuario) {
-            if (!conversas[idUsuario]) {
-                alert("Conversa não encontrada!");
-                return;
-            }
-
-            usuarioAtual = conversas[idUsuario];
-            
-            document.getElementById('telaLista').classList.add('escondido');
-            document.getElementById('telaChat').classList.remove('escondido');
-
-            document.getElementById('chatNomeCabecalho').textContent = usuarioAtual.nome;
-            document.getElementById('chatIdCabecalho').textContent = `🆔 ${idUsuario}`;
-
-            ouvinteMensagens = db.ref(CAMINHO_MSG).on("value", snap => {
-                const todasMsg = snap.val() || {};
-                const mensagensFiltradas = [];
                 
-                for (const chave in todasMsg) {
-                    const m = todasMsg[chave];
-                    if (m.idRemetente === idUsuario) {
-                        mensagensFiltradas.push({ chave, ...m });
+                let respostaHTML = '';
+                if (temResposta) {
+                    respostaHTML = `
+                        <div class="resposta‑area">
+                            <span class="resposta‑label">✅ Resposta enviada:</span>
+                            <div class="resposta‑dada">
+                                ${c.resposta}
+                                <div class="horario">🕒 ${c.dataResposta || ''}</div>
+                            </div>
+                        </div>
+                    `;
+                } else {
+                    respostaHTML = `
+                        <div class="resposta‑area">
+                            <span class="resposta‑label">✏️ Responder comentário:</span>
+                            <textarea class="resposta‑input" id="resposta‑cmt‑${chave}" placeholder="Escreva sua resposta aqui..."></textarea>
+                            <button class="btn‑responder" data‑video="${videoId}" data‑chave="${chave}">📤 Enviar Resposta</button>
+                        </div>
+                    `;
+                }
+                
+                div.innerHTML = `
+                    <div class="msg‑cabecalho">💬 Comentário de Vídeo</div>
+                    <div class="video‑titulo‑ref">🎬 Vídeo: ${videoId}</div>
+                    <div class="msg‑remetente">
+                        👤 ${c.nome || 'Visitante'}
+                        <div class="horario">🕒 ${c.data || 'Sem data'}</div>
+                    </div>
+                    <div class="msg‑conteudo">${c.texto}</div>
+                    ${respostaHTML}
+                    ${botoesHTML}
+                `;
+                container.appendChild(div);
+            }
+        });
+
+        if (!temComentarios) {
+            container.innerHTML = '<div class="vazio">💬 Nenhum comentário de vídeo ainda</div>';
+            return;
+        }
+
+        container.querySelectorAll('.btn‑responder').forEach(function(botao) {
+            botao.addEventListener('click', function() {
+                const videoId = this.getAttribute('data‑video');
+                const chave = this.getAttribute('data‑chave');
+                const campo = document.getElementById(`resposta‑cmt‑${chave}`);
+                const textoResposta = campo.value.trim();
+                
+                if (!textoResposta) {
+                    alert('⚠️ Escreva uma resposta primeiro!');
+                    return;
+                }
+                
+                db.ref(`${CAMINHO_COMENTARIOS_VIDEOS}/${videoId}/comentarios/${chave}`).update({
+                    resposta: textoResposta,
+                    dataResposta: dataRespostaAtual()
+                }).then(() => {
+                    alert('✅ Resposta enviada com sucesso! Aparecerá no vídeo automaticamente.');
+                }).catch(err => {
+                    alert('❌ Erro: ' + err.message);
+                });
+            });
+        });
+
+        container.querySelectorAll('.btn‑apagar').forEach(function(botao) {
+            botao.addEventListener('click', function() {
+                const videoId = this.getAttribute('data‑video');
+                const chave = this.getAttribute('data‑chave');
+                const tipo = this.getAttribute('data‑tipo');
+                
+                if (tipo === 'resposta') {
+                    if (confirm('Tem certeza que deseja apagar SOMENTE a sua resposta?')) {
+                        db.ref(`${CAMINHO_COMENTARIOS_VIDEOS}/${videoId}/comentarios/${chave}/resposta`).remove()
+                        .then(() => {
+                            return db.ref(`${CAMINHO_COMENTARIOS_VIDEOS}/${videoId}/comentarios/${chave}/dataResposta`).remove();
+                        })
+                        .then(() => {
+                            alert('✅ Sua resposta foi removida! O comentário do usuário continua visível.');
+                        })
+                        .catch(err => {
+                            alert('❌ Erro: ' + err.message);
+                        });
+                    }
+                } else {
+                    if (confirm('⚠️ ATENÇÃO: Isso apagará o comentário do usuário E a sua resposta! Tem certeza?')) {
+                        db.ref(`${CAMINHO_COMENTARIOS_VIDEOS}/${videoId}/comentarios/${chave}`).remove()
+                        .then(() => {
+                            alert('✅ Comentário removido completamente!');
+                        })
+                        .catch(err => {
+                            alert('❌ Erro: ' + err.message);
+                        });
                     }
                 }
-
-                usuarioAtual.mensagens = mensagensFiltradas;
-                carregarMensagens();
             });
+        });
+    });
+}
+
+function carregarApoio() {
+    if (!db) {
+        document.getElementById('listaApoio').innerHTML = 
+            '<div class="vazio">⚠️ Firebase não conectado. Verifique o config.js</div>';
+        return;
+    }
+    pararOuvirTudo();
+    
+    const container = document.getElementById('listaApoio');
+    
+    ouvinteApoio = db.ref(CAMINHO_APOIO).on("value", function(snapshot) {
+        container.innerHTML = '';
+
+        if (!snapshot.exists()) {
+            container.innerHTML = '<div class="vazio">📭 Nenhuma mensagem no Mural ainda</div>';
+            return;
         }
 
-        function carregarMensagens() {
-            const conteudo = document.getElementById('chatConteudo');
-            conteudo.innerHTML = '';
-
-            if (!usuarioAtual || !usuarioAtual.mensagens.length) {
-                conteudo.innerHTML = '<p style="text-align:center; color:#999; padding:2rem;">Nenhuma mensagem 💬</p>';
-                return;
+        snapshot.forEach(function(itemSnap) {
+            const chave = itemSnap.key;
+            const msg = itemSnap.val();
+            const temResposta = msg.resposta && msg.resposta.trim() !== '';
+            
+            const div = document.createElement('div');
+            div.className = 'bloco‑mensagem';
+            
+            let respostaHTML = '';
+            if (temResposta) {
+                respostaHTML = `
+                    <div class="resposta‑area">
+                        <span class="resposta‑label">✅ Resposta enviada:</span>
+                        <div class="resposta‑dada">
+                            ${msg.resposta}
+                            <div class="horario">🕒 ${msg.dataResposta || ''}</div>
+                        </div>
+                    </div>
+                `;
+            } else {
+                respostaHTML = `
+                    <div class="resposta‑area">
+                        <span class="resposta‑label">✏️ Responder mensagem:</span>
+                        <textarea class="resposta‑input" id="resposta‑apoio‑${chave}" placeholder="Escreva sua resposta aqui..."></textarea>
+                        <button class="btn‑responder" data‑chave="${chave}" data‑tipo="apoio">📤 Enviar Resposta</button>
+                    </div>
+                `;
             }
+            
+            div.innerHTML = `
+                <div class="msg‑cabecalho">📝 Mensagem do Mural</div>
+                <div class="msg‑remetente">
+                    👤 ${msg.nome || 'Anônimo'}
+                    <div class="horario">🕒 ${msg.data || 'Sem data'}</div>
+                </div>
+                <div class="msg‑conteudo">${msg.texto}</div>
+                ${respostaHTML}
+                <div class="msg‑botoes">
+                    <button class="btn‑apagar" data‑chave="${chave}" data‑tipo="apoio">🗑️ Apagar esta mensagem</button>
+                </div>
+            `;
+            container.appendChild(div);
+        });
 
-            // ✅ Cria lista combinada: mensagem do cliente + resposta como entrada separada
-            const listaOrdenada = [];
-
-            usuarioAtual.mensagens.forEach(m => {
-                // Mensagem da cliente
-                listaOrdenada.push({
-                    tipo: 'cliente',
-                    nome: usuarioAtual.nome,
-                    texto: m.texto,
-                    dataStr: m.data,
-                    dataNum: parseDataPtBr(m.data),
-                    temResposta: !!m.resposta
+        container.querySelectorAll('.btn‑responder').forEach(function(botao) {
+            botao.addEventListener('click', function() {
+                const chave = this.getAttribute('data‑chave');
+                const campo = document.getElementById(`resposta‑apoio‑${chave}`);
+                const textoResposta = campo.value.trim();
+                
+                if (!textoResposta) {
+                    alert('⚠️ Escreva uma resposta primeiro!');
+                    return;
+                }
+                
+                db.ref(`${CAMINHO_APOIO}/${chave}`).update({
+                    resposta: textoResposta,
+                    dataResposta: dataRespostaAtual()
+                }).then(() => {
+                    alert('✅ Resposta enviada com sucesso!');
+                }).catch(err => {
+                    alert('❌ Erro: ' + err.message);
                 });
+            });
+        });
 
-                // Resposta do admin — com a DATA DA RESPOSTA
-                if (m.resposta) {
-                    listaOrdenada.push({
-                        tipo: 'admin',
-                        nome: '📩 Gabriel do Corte ✂️💈',
-                        texto: m.resposta,
-                        dataStr: m.dataResposta,
-                        dataNum: parseDataPtBr(m.dataResposta)
+        container.querySelectorAll('.btn‑apagar').forEach(function(botao) {
+            botao.addEventListener('click', function() {
+                const chave = this.getAttribute('data‑chave');
+                if (confirm('Tem certeza que deseja apagar esta mensagem?')) {
+                    db.ref(`${CAMINHO_APOIO}/${chave}`).remove()
+                    .then(() => {
+                        alert('✅ Mensagem apagada!');
+                    }).catch(err => {
+                        alert('❌ Erro: ' + err.message);
                     });
                 }
             });
+        });
+    });
+}
 
-            // ✅ ORDENA TUDO PELA DATA — cliente e resposta juntos
-            listaOrdenada.sort((a, b) => a.dataNum - b.dataNum);
+function carregarChat() {
+    if (!db) {
+        document.getElementById('listaChat').innerHTML = 
+            '<div class="vazio">⚠️ Firebase não conectado. Verifique o config.js</div>';
+        return;
+    }
+    pararOuvirTudo();
+    
+    const container = document.getElementById('listaChat');
+    
+    ouvinteChat = db.ref(CAMINHO_CHAT).on("value", function(snapshot) {
+        container.innerHTML = '';
 
-            // ✅ Exibe na ordem correta
-            listaOrdenada.forEach(item => {
-                if (item.tipo === 'cliente') {
-                    conteudo.innerHTML += `
-                        <div class="bolha-usuario">
-                            <div class="bolha-nome">${item.nome}</div>
-                            <div class="bolha-texto">${item.texto}</div>
-                            <div class="bolha-data">${item.dataStr || ''}</div>
+        if (!snapshot.exists()) {
+            container.innerHTML = '<div class="vazio">💬 Nenhuma mensagem de chat ainda</div>';
+            return;
+        }
+
+        snapshot.forEach(function(itemSnap) {
+            const chave = itemSnap.key;
+            const msg = itemSnap.val();
+            const temResposta = msg.resposta && msg.resposta.trim() !== '';
+            
+            const div = document.createElement('div');
+            div.className = 'bloco‑mensagem';
+            
+            let respostaHTML = '';
+            if (temResposta) {
+                respostaHTML = `
+                    <div class="resposta‑area">
+                        <span class="resposta‑label">✅ Resposta enviada:</span>
+                        <div class="resposta‑dada">
+                            ${msg.resposta}
+                            <div class="horario">🕒 ${msg.dataResposta || ''}</div>
                         </div>
-                    `;
-                    if (!item.temResposta) {
-                        conteudo.innerHTML += `<div class="status-bolinha pendente">⏳ Pendente</div>`;
-                    }
-                } else {
-                    conteudo.innerHTML += `
-                        <div class="bolha-admin">
-                            <div class="bolha-nome">${item.nome}</div>
-                            <div class="bolha-texto">${item.texto}</div>
-                            <div class="bolha-data">${item.dataStr || ''}</div>
-                        </div>
-                    `;
+                    </div>
+                `;
+            } else {
+                respostaHTML = `
+                    <div class="resposta‑area">
+                        <span class="resposta‑label">✏️ Responder mensagem:</span>
+                        <textarea class="resposta‑input" id="resposta‑chat‑${chave}" placeholder="Escreva sua resposta aqui..."></textarea>
+                        <button class="btn‑responder" data‑chave="${chave}" data‑tipo="chat">📤 Enviar Resposta</button>
+                    </div>
+                `;
+            }
+            
+            div.innerHTML = `
+                <div class="msg‑cabecalho">💬 Mensagem de Chat</div>
+                <div class="msg‑remetente">
+                    👤 ${msg.nome || 'Anônimo'}
+                    <div class="horario">🕒 ${msg.data || 'Sem data'}</div>
+                </div>
+                <div class="msg‑conteudo">${msg.texto}</div>
+${respostaHTML}
+<div class="msg‑botoes">
+    <button class="btn‑apagar" data‑chave="${chave}" data‑tipo="chat">🗑️ Apagar esta mensagem</button>
+</div>
+`;
+            container.appendChild(div);
+        });
+
+        // Responder mensagens do chat
+        container.querySelectorAll('.btn‑responder').forEach(function(botao) {
+            botao.addEventListener('click', function() {
+                const chave = this.getAttribute('data‑chave');
+                const campo = document.getElementById(`resposta‑chat‑${chave}`);
+                const textoResposta = campo.value.trim();
+                
+                if (!textoResposta) {
+                    alert('⚠️ Escreva uma resposta primeiro!');
+                    return;
+                }
+                
+                db.ref(`${CAMINHO_CHAT}/${chave}`).update({
+                    resposta: textoResposta,
+                    dataResposta: dataRespostaAtual()
+                }).then(() => {
+                    alert('✅ Resposta enviada com sucesso!');
+                }).catch(err => {
+                    alert('❌ Erro: ' + err.message);
+                });
+            });
+        });
+
+        // Apagar mensagens do chat
+        container.querySelectorAll('.btn‑apagar').forEach(function(botao) {
+            botao.addEventListener('click', function() {
+                const chave = this.getAttribute('data‑chave');
+                if (confirm('Tem certeza que deseja apagar esta mensagem?')) {
+                    db.ref(`${CAMINHO_CHAT}/${chave}`).remove()
+                    .then(() => {
+                        alert('✅ Mensagem apagada!');
+                    }).catch(err => {
+                        alert('❌ Erro: ' + err.message);
+                    });
                 }
             });
+        });
+    });
+}
 
-            // ✅ Vai direto pra última mensagem — sempre embaixo
-            conteudo.scrollTop = conteudo.scrollHeight;
-        }
+// 🗑️ BOTÕES DE LIMPAR TUDO
+document.getElementById('btnLimparApoio').addEventListener('click', function() {
+    if (confirm('⚠️ ATENÇÃO: Isso apagARÁ TODAS as mensagens do Mural! Não pode ser desfeito. Tem certeza?')) {
+        db.ref(CAMINHO_APOIO).remove()
+        .then(() => {
+            alert('✅ Mural limpo!');
+        }).catch(err => {
+            alert('❌ Erro: ' + err.message);
+        });
+    }
+});
 
-        function fecharChat() {
-            pararOuvirMensagens();
-            usuarioAtual = null;
-            document.getElementById('telaChat').classList.add('escondido');
-            document.getElementById('telaLista').classList.remove('escondido');
-        }
+document.getElementById('btnLimparChat').addEventListener('click', function() {
+    if (confirm('⚠️ ATENÇÃO: Isso apagARÁ TODAS as mensagens do Chat! Não pode ser desfeito. Tem certeza?')) {
+        db.ref(CAMINHO_CHAT).remove()
+        .then(() => {
+            alert('✅ Chat limpo!');
+        }).catch(err => {
+            alert('❌ Erro: ' + err.message);
+        });
+    }
+});
 
-        async function enviarRespostaChat() {
-            if (!usuarioAtual || !db) return;
+document.getElementById('btnLimparComentariosVideos').addEventListener('click', function() {
+    if (confirm('⚠️ ATENÇÃO: Isso apagARÁ TODOS os comentários de TODOS os vídeos! Não pode ser desfeito. Tem certeza?')) {
+        db.ref(CAMINHO_COMENTARIOS_VIDEOS).remove()
+        .then(() => {
+            alert('✅ Comentários de vídeos limpos!');
+        }).catch(err => {
+            alert('❌ Erro: ' + err.message);
+        });
+    }
+});
 
-            const texto = document.getElementById('chatResposta').value.trim();
-            if (!texto) {
-                alert("Escreva sua mensagem! ✍️");
-                return;
-            }
+// ✨ FUNÇÃO DOS CONTADORES (NOVO)
+function carregarContadoresPainel(){
+    if(!db) return;
+    ouvinteContadorGeral = db.ref(CAMINHO_CONTADOR_GERAL).on("value", snap=>{
+        document.getElementById("numContadorGeral").innerText = snap.val() || 0;
+    })
+    ouvinteContadorTikTok = db.ref(CAMINHO_CONTADOR_TIKTOK).on("value", snap=>{
+        document.getElementById("numContadorTikTok").innerText = snap.val() || 0;
+    })
+}
 
-            const msgPendente = usuarioAtual.mensagens.find(m => !m.resposta);
-            
-            if (!msgPendente) {
-                alert("Todas as mensagens já foram respondidas! ✅");
-                document.getElementById('chatResposta').value = '';
-                return;
-            }
+function pararOuvirContadores(){
+    if(ouvinteContadorGeral) db.ref(CAMINHO_CONTADOR_GERAL).off("value", ouvinteContadorGeral);
+    if(ouvinteContadorTikTok) db.ref(CAMINHO_CONTADOR_TIKTOK).off("value", ouvinteContadorTikTok);
+}
 
-            await db.ref(`${CAMINHO_MSG}/${msgPendente.chave}`).update({
-                resposta: texto,
-                dataResposta: dataAtual()
-            });
-
-            alert("✅ Mensagem enviada!");
-            document.getElementById('chatResposta').value = '';
-        }
-
-        async function apagarConversa(id) {
-            if (!confirm(`Apagar conversa com ${conversas[id]?.nome || id}?`)) return;
-            if (!db) return;
-            
-            const mensagensParaApagar = conversas[id].mensagens.map(m => m.chave);
-            for (const chave of mensagensParaApagar) {
-                await db.ref(`${CAMINHO_MSG}/${chave}`).remove();
-            }
-            
-            alert("✅ Conversa apagada!");
-        }
-
-        async function limparTodasMensagens() {
-            if (!confirm("APAGAR TUDO? Essa ação não pode ser desfeita!")) return;
-            if (!db) return;
-            await db.ref(CAMINHO_MSG).remove();
-            alert("✅ Todas as mensagens foram apagadas!");
-        }
     </script>
 </body>
 </html>
+
