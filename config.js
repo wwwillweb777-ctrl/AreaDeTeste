@@ -1,22 +1,17 @@
 // ==========================================
 // FIREBASE CONFIGURAÇÃO — AMBIENTE DE TESTE
-// Projeto: chave-key-teste
+// Projeto: chave‑key‑teste
 // ==========================================
 
-const firebaseConfig = {
-  apiKey: "AIzaSyBwYqhA74ThUkYpHkwxc2EM-kJ26I2-ek8",
-  authDomain: "chave-key-teste.firebaseapp.com",
-  databaseURL: "https://chave-key-teste-default-rtdb.firebaseio.com",
-  projectId: "chave-key-teste",
-  storageBucket: "chave-key-teste.firebasestorage.app",
+const firebaseConfigTeste = {
+  apiKey: "AIzaSyBwYqhA74ThUkYpHkwxc2EM‑kJ26I2‑ek8",
+  authDomain: "chave‑key‑teste.firebaseapp.com",
+  databaseURL: "https://chave‑key‑teste‑default‑rtdb.firebaseio.com",
+  projectId: "chave‑key‑teste",
+  storageBucket: "chave‑key‑teste.firebasestorage.app",
   messagingSenderId: "58692158626",
   appId: "1:58692158626:web:2762d42ea0abf6726943fb"
 };
 
 // SENHA DA ÁREA ADMINISTRATIVA
-const SENHA_ADMIN = "WJ321";
-
-// INICIALIZA O FIREBASE
-if (!firebase.apps.length) {
-  firebase.initializeApp(firebaseConfig);
-}
+const SENHA_ADMIN_TESTE = "WJ321";
